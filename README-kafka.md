@@ -130,28 +130,27 @@ docker exec kafka1 kafka-topics --bootstrap-server localhost:9092 --list
 ### Create a Topic
 
 ```bash
-docker exec kafka1 kafka-topics --bootstrap-server localhost:9092 \
-  --create --topic my-topic --partitions 3 --replication-factor 1
+docker exec kafka1 kafka-topics --bootstrap-server localhost:9092 --create --topic my-topic --partitions 3 --replication-factor 1
 ```
 
 For multi-broker setup, you can use a higher replication factor:
 
 ```bash
-docker exec kafka1 kafka-topics --bootstrap-server localhost:9092 \
+docker exec kafka1 kafka-topics --bootstrap-server localhost:9092 
   --create --topic my-topic --partitions 3 --replication-factor 3
 ```
 
 ### Describe a Topic
 
 ```bash
-docker exec kafka1 kafka-topics --bootstrap-server localhost:9092 \
+docker exec kafka1 kafka-topics --bootstrap-server localhost:9092 
   --describe --topic my-topic
 ```
 
 ### Delete a Topic
 
 ```bash
-docker exec kafka1 kafka-topics --bootstrap-server localhost:9092 \
+docker exec kafka1 kafka-topics --bootstrap-server localhost:9092 
   --delete --topic my-topic
 ```
 
@@ -160,7 +159,7 @@ docker exec kafka1 kafka-topics --bootstrap-server localhost:9092 \
 ### Producer
 
 ```bash
-docker exec -it kafka1 kafka-console-producer --bootstrap-server localhost:9092 \
+docker exec -it kafka1 kafka-console-producer --bootstrap-server localhost:9092 
   --topic my-topic
 ```
 
@@ -169,14 +168,14 @@ Type your messages and press Enter after each. Press `Ctrl+C` to exit.
 ### Consumer
 
 ```bash
-docker exec -it kafka1 kafka-console-consumer --bootstrap-server localhost:9092 \
+docker exec -it kafka1 kafka-console-consumer --bootstrap-server localhost:9092 
   --topic my-topic
 ```
 
 ### Consume from Beginning
 
 ```bash
-docker exec -it kafka1 kafka-console-consumer --bootstrap-server localhost:9092 \
+docker exec -it kafka1 kafka-console-consumer --bootstrap-server localhost:9092 
   --topic my-topic --from-beginning
 ```
 
@@ -185,7 +184,7 @@ docker exec -it kafka1 kafka-console-consumer --bootstrap-server localhost:9092 
 ### Producer with Keys
 
 ```bash
-docker exec -it kafka1 kafka-console-producer --bootstrap-server localhost:9092 \
+docker exec -it kafka1 kafka-console-producer --bootstrap-server localhost:9092 
   --topic my-topic \
   --property parse.key=true \
   --property key.separator=-
@@ -196,7 +195,7 @@ Format: `key-value` (e.g., `user1-Hello World`)
 ### Consumer with Keys
 
 ```bash
-docker exec -it kafka1 kafka-console-consumer --bootstrap-server localhost:9092 \
+docker exec -it kafka1 kafka-console-consumer --bootstrap-server localhost:9092 
   --topic my-topic --from-beginning \
   --property print.key=true \
   --property key.separator=-
@@ -207,7 +206,7 @@ docker exec -it kafka1 kafka-console-consumer --bootstrap-server localhost:9092 
 ### Consume with Consumer Group
 
 ```bash
-docker exec -it kafka1 kafka-console-consumer --bootstrap-server localhost:9092 \
+docker exec -it kafka1 kafka-console-consumer --bootstrap-server localhost:9092 
   --topic my-topic --group my-consumer-group
 ```
 
@@ -222,14 +221,14 @@ docker exec kafka1 kafka-consumer-groups --bootstrap-server localhost:9092 --lis
 ### Describe Consumer Group
 
 ```bash
-docker exec kafka1 kafka-consumer-groups --bootstrap-server localhost:9092 \
+docker exec kafka1 kafka-consumer-groups --bootstrap-server localhost:9092 
   --describe --group my-consumer-group
 ```
 
 ### Reset Consumer Group Offset
 
 ```bash
-docker exec kafka1 kafka-consumer-groups --bootstrap-server localhost:9092 \
+docker exec kafka1 kafka-consumer-groups --bootstrap-server localhost:9092 
   --group my-consumer-group --topic my-topic --reset-offsets --to-earliest --execute
 ```
 
@@ -336,14 +335,14 @@ This demonstrates real-time message flow between producer and consumer across th
 **Terminal 1 - Start a Consumer (run this first):**
 
 ```bash
-docker exec -it kafka1 kafka-console-consumer --bootstrap-server kafka1:19092 \
+docker exec -it kafka1 kafka-console-consumer --bootstrap-server kafka1:19092 
   --topic demo-topic --from-beginning
 ```
 
 **Terminal 2 - Start a Producer:**
 
 ```bash
-docker exec -it kafka1 kafka-console-producer --bootstrap-server kafka1:19092 \
+docker exec -it kafka1 kafka-console-producer --bootstrap-server kafka1:19092 
   --topic demo-topic
 ```
 
@@ -355,11 +354,11 @@ To prove replication works, start another consumer connected to a **different br
 
 ```bash
 # Consumer connected to kafka2
-docker exec -it kafka2 kafka-console-consumer --bootstrap-server kafka2:19094 \
+docker exec -it kafka2 kafka-console-consumer --bootstrap-server kafka2:19094 
   --topic demo-topic --from-beginning
 
 # Consumer connected to kafka3
-docker exec -it kafka3 kafka-console-consumer --bootstrap-server kafka3:19096 \
+docker exec -it kafka3 kafka-console-consumer --bootstrap-server kafka3:19096 
   --topic demo-topic --from-beginning
 ```
 
@@ -377,7 +376,7 @@ Now let's verify the same data exists on all 3 brokers at the file system level.
 **Step 1: Produce messages to the topic (if not already done):**
 
 ```bash
-docker exec -it kafka1 kafka-console-producer --bootstrap-server kafka1:19092 \
+docker exec -it kafka1 kafka-console-producer --bootstrap-server kafka1:19092 
   --topic demo-topic
 ```
 
@@ -515,7 +514,7 @@ docker stop kafka1
 **Step 3: Check the new leader (connect to kafka2):**
 
 ```bash
-docker exec kafka2 kafka-topics --bootstrap-server kafka2:19094 \
+docker exec kafka2 kafka-topics --bootstrap-server kafka2:19094 
   --describe --topic demo-topic
 ```
 
@@ -533,7 +532,7 @@ docker start kafka1
 **Step 5: Verify ISR is restored:**
 
 ```bash
-docker exec kafka1 kafka-topics --bootstrap-server kafka1:19092 \
+docker exec kafka1 kafka-topics --bootstrap-server kafka1:19092 
   --describe --topic demo-topic
 ```
 
