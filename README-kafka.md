@@ -194,8 +194,7 @@ docker exec -it kafka1 kafka-console-consumer --bootstrap-server localhost:9092 
 ### Consume with Consumer Group
 
 ```bash
-docker exec -it kafka1 kafka-console-consumer --bootstrap-server localhost:9092 
-  --topic my-topic --group my-consumer-group
+docker exec -it kafka1 kafka-console-consumer --bootstrap-server localhost:9092 --topic my-topic --group my-consumer-group
 ```
 
 ## Consumer Groups
@@ -209,15 +208,13 @@ docker exec kafka1 kafka-consumer-groups --bootstrap-server localhost:9092 --lis
 ### Describe Consumer Group
 
 ```bash
-docker exec kafka1 kafka-consumer-groups --bootstrap-server localhost:9092 
-  --describe --group my-consumer-group
+docker exec kafka1 kafka-consumer-groups --bootstrap-server localhost:9092 --describe --group my-consumer-group
 ```
 
 ### Reset Consumer Group Offset
 
 ```bash
-docker exec kafka1 kafka-consumer-groups --bootstrap-server localhost:9092 
-  --group my-consumer-group --topic my-topic --reset-offsets --to-earliest --execute
+docker exec kafka1 kafka-consumer-groups --bootstrap-server localhost:9092 --group my-consumer-group --topic my-topic --reset-offsets --to-earliest --execute
 ```
 
 ## Multi-Broker Demonstrations
@@ -268,15 +265,13 @@ docker-compose -f docker-compose-multi-broker.yml up -d
 **Create a topic with replication factor 3:**
 
 ```bash
-docker exec kafka1 kafka-topics --bootstrap-server kafka1:19092 \
-  --create --topic demo-topic --partitions 3 --replication-factor 3
+docker exec kafka1 kafka-topics --bootstrap-server kafka1:19092 --create --topic demo-topic --partitions 3 --replication-factor 3
 ```
 
 **Describe the topic to see replication:**
 
 ```bash
-docker exec kafka1 kafka-topics --bootstrap-server kafka1:19092 \
-  --describe --topic demo-topic
+docker exec kafka1 kafka-topics --bootstrap-server kafka1:19092 --describe --topic demo-topic
 ```
 
 **Expected Output:**
@@ -323,15 +318,13 @@ This demonstrates real-time message flow between producer and consumer across th
 **Terminal 1 - Start a Consumer (run this first):**
 
 ```bash
-docker exec -it kafka1 kafka-console-consumer --bootstrap-server kafka1:19092 
-  --topic demo-topic --from-beginning
+docker exec -it kafka1 kafka-console-consumer --bootstrap-server kafka1:19092 --topic demo-topic --from-beginning
 ```
 
 **Terminal 2 - Start a Producer:**
 
 ```bash
-docker exec -it kafka1 kafka-console-producer --bootstrap-server kafka1:19092 
-  --topic demo-topic
+docker exec -it kafka1 kafka-console-producer --bootstrap-server kafka1:19092 --topic demo-topic
 ```
 
 Type messages in the producer terminal and watch them appear instantly in the consumer terminal.
@@ -342,12 +335,10 @@ To prove replication works, start another consumer connected to a **different br
 
 ```bash
 # Consumer connected to kafka2
-docker exec -it kafka2 kafka-console-consumer --bootstrap-server kafka2:19094 
-  --topic demo-topic --from-beginning
+docker exec -it kafka2 kafka-console-consumer --bootstrap-server kafka2:19094 --topic demo-topic --from-beginning
 
 # Consumer connected to kafka3
-docker exec -it kafka3 kafka-console-consumer --bootstrap-server kafka3:19096 
-  --topic demo-topic --from-beginning
+docker exec -it kafka3 kafka-console-consumer --bootstrap-server kafka3:19096 --topic demo-topic --from-beginning
 ```
 
 **What to observe:**
@@ -364,8 +355,7 @@ Now let's verify the same data exists on all 3 brokers at the file system level.
 **Step 1: Produce messages to the topic (if not already done):**
 
 ```bash
-docker exec -it kafka1 kafka-console-producer --bootstrap-server kafka1:19092 
-  --topic demo-topic
+docker exec -it kafka1 kafka-console-producer --bootstrap-server kafka1:19092 --topic demo-topic
 ```
 
 Type a few messages (e.g., `message1`, `message2`, `message3`) and press `Ctrl+C` to exit.
@@ -402,19 +392,13 @@ Replace `demo-topic-1` with whichever partition has data:
 
 ```bash
 # View data on Broker 1
-docker exec kafka1 kafka-dump-log \
-  --files /var/lib/kafka/data/demo-topic-1/00000000000000000000.log \
-  --print-data-log
+docker exec kafka1 kafka-dump-log --files /var/lib/kafka/data/demo-topic-1/00000000000000000000.log --print-data-log
 
 # View data on Broker 2 - SAME DATA!
-docker exec kafka2 kafka-dump-log \
-  --files /var/lib/kafka/data/demo-topic-1/00000000000000000000.log \
-  --print-data-log
+docker exec kafka2 kafka-dump-log --files /var/lib/kafka/data/demo-topic-1/00000000000000000000.log --print-data-log
 
 # View data on Broker 3 - SAME DATA!
-docker exec kafka3 kafka-dump-log \
-  --files /var/lib/kafka/data/demo-topic-1/00000000000000000000.log \
-  --print-data-log
+docker exec kafka3 kafka-dump-log --files /var/lib/kafka/data/demo-topic-1/00000000000000000000.log --print-data-log
 ```
 
 **What you'll see:**
@@ -489,8 +473,7 @@ baseOffset: 2 ... payload: message3
 **Step 1: Check current leader for partition 0:**
 
 ```bash
-docker exec kafka1 kafka-topics --bootstrap-server kafka1:19092 \
-  --describe --topic demo-topic | grep "Partition: 0"
+docker exec kafka1 kafka-topics --bootstrap-server kafka1:19092 --describe --topic demo-topic | grep "Partition: 0"
 ```
 
 **Step 2: Stop broker 1:**
@@ -502,8 +485,7 @@ docker stop kafka1
 **Step 3: Check the new leader (connect to kafka2):**
 
 ```bash
-docker exec kafka2 kafka-topics --bootstrap-server kafka2:19094 
-  --describe --topic demo-topic
+docker exec kafka2 kafka-topics --bootstrap-server kafka2:19094 --describe --topic demo-topic
 ```
 
 **What to observe:**
@@ -520,8 +502,7 @@ docker start kafka1
 **Step 5: Verify ISR is restored:**
 
 ```bash
-docker exec kafka1 kafka-topics --bootstrap-server kafka1:19092 
-  --describe --topic demo-topic
+docker exec kafka1 kafka-topics --bootstrap-server kafka1:19092 --describe --topic demo-topic
 ```
 
 ISR should expand back to include all 3 brokers.
@@ -566,31 +547,26 @@ ISR should expand back to include all 3 brokers.
 **Step 1: Create a topic with min.insync.replicas=2:**
 
 ```bash
-docker exec kafka1 kafka-topics --bootstrap-server kafka1:19092 \
-  --create --topic isr-demo --partitions 1 --replication-factor 3 \
-  --config min.insync.replicas=2
+docker exec kafka1 kafka-topics --bootstrap-server kafka1:19092 --create --topic isr-demo --partitions 1 --replication-factor 3 --config min.insync.replicas=2
 ```
 
 **Step 2: Start a producer with acks=all:**
 
 ```bash
-docker exec -it kafka1 kafka-console-producer --bootstrap-server kafka1:19092 \
-  --topic isr-demo --producer-property acks=all
+docker exec -it kafka1 kafka-console-producer --bootstrap-server kafka1:19092 --topic isr-demo --producer-property acks=all
 ```
 
 **Step 3: In another terminal, check ISR:**
 
 ```bash
-docker exec kafka1 kafka-topics --bootstrap-server kafka1:19092 \
-  --describe --topic isr-demo
+docker exec kafka1 kafka-topics --bootstrap-server kafka1:19092 --describe --topic isr-demo
 ```
 
 **Step 4: Stop broker 2 and check ISR:**
 
 ```bash
 docker stop kafka2
-docker exec kafka1 kafka-topics --bootstrap-server kafka1:19092 \
-  --describe --topic isr-demo
+docker exec kafka1 kafka-topics --bootstrap-server kafka1:19092 --describe --topic isr-demo
 ```
 
 ISR should show only 2 brokers. Producer **still works** (ISR=2 >= min.insync.replicas=2).
@@ -599,8 +575,7 @@ ISR should show only 2 brokers. Producer **still works** (ISR=2 >= min.insync.re
 
 ```bash
 docker stop kafka3
-docker exec kafka1 kafka-topics --bootstrap-server kafka1:19092 \
-  --describe --topic isr-demo
+docker exec kafka1 kafka-topics --bootstrap-server kafka1:19092 --describe --topic isr-demo
 ```
 
 ISR now shows only 1 broker. Try to produce - it should **FAIL** with `NotEnoughReplicasException`.
@@ -656,22 +631,19 @@ docker start kafka2 kafka3
 **Step 1: Create a topic with 6 partitions:**
 
 ```bash
-docker exec kafka1 kafka-topics --bootstrap-server kafka1:19092 \
-  --create --topic orders --partitions 6 --replication-factor 3
+docker exec kafka1 kafka-topics --bootstrap-server kafka1:19092 --create --topic orders --partitions 6 --replication-factor 3
 ```
 
 **Step 2: Describe to see distribution:**
 
 ```bash
-docker exec kafka1 kafka-topics --bootstrap-server kafka1:19092 \
-  --describe --topic orders
+docker exec kafka1 kafka-topics --bootstrap-server kafka1:19092 --describe --topic orders
 ```
 
 **Step 3: Count leaders per broker:**
 
 ```bash
-docker exec kafka1 kafka-topics --bootstrap-server kafka1:19092 \
-  --describe --topic orders | grep "Leader:" | awk '{print $4}' | sort | uniq -c
+docker exec kafka1 kafka-topics --bootstrap-server kafka1:19092 --describe --topic orders | grep "Leader:" | awk '{print $4}' | sort | uniq -c
 ```
 
 **What to observe:**
@@ -734,18 +706,13 @@ Typical files in a partition directory:
 Dump the contents of a log segment:
 
 ```bash
-docker exec kafka1 kafka-dump-log \
-  --files /var/lib/kafka/data/my-topic-0/00000000000000000000.log \
-  --print-data-log
+docker exec kafka1 kafka-dump-log --files /var/lib/kafka/data/my-topic-0/00000000000000000000.log --print-data-log
 ```
 
 View log with deep iteration (shows all record details):
 
 ```bash
-docker exec kafka1 kafka-dump-log \
-  --files /var/lib/kafka/data/my-topic-0/00000000000000000000.log \
-  --print-data-log \
-  --deep-iteration
+docker exec kafka1 kafka-dump-log --files /var/lib/kafka/data/my-topic-0/00000000000000000000.log --print-data-log --deep-iteration
 ```
 
 ### Retention Period
@@ -759,32 +726,23 @@ Kafka automatically deletes old data based on retention policies. This is config
 docker exec kafka1 cat /etc/kafka/kafka.properties | grep log.retention
 
 # Check current retention for a topic
-docker exec kafka1 kafka-configs --bootstrap-server localhost:9092 \
-  --entity-type topics --entity-name my-topic --describe --all | grep retention
+docker exec kafka1 kafka-configs --bootstrap-server localhost:9092 --entity-type topics --entity-name my-topic --describe --all | grep retention
 
 # Set retention to 1 hour (3600000 ms)
-docker exec kafka1 kafka-configs --bootstrap-server localhost:9092 \
-  --entity-type topics --entity-name my-topic \
-  --alter --add-config retention.ms=3600000
+docker exec kafka1 kafka-configs --bootstrap-server localhost:9092 --entity-type topics --entity-name my-topic --alter --add-config retention.ms=3600000
 
 # Set retention to 7 days (604800000 ms) - default
-docker exec kafka1 kafka-configs --bootstrap-server localhost:9092 \
-  --entity-type topics --entity-name my-topic \
-  --alter --add-config retention.ms=604800000
+docker exec kafka1 kafka-configs --bootstrap-server localhost:9092 --entity-type topics --entity-name my-topic --alter --add-config retention.ms=604800000
 ```
 
 **Size-based retention**:
 
 ```bash
 # Set max size to 1GB per partition
-docker exec kafka1 kafka-configs --bootstrap-server localhost:9092 \
-  --entity-type topics --entity-name my-topic \
-  --alter --add-config retention.bytes=1073741824
+docker exec kafka1 kafka-configs --bootstrap-server localhost:9092 --entity-type topics --entity-name my-topic --alter --add-config retention.bytes=1073741824
 
 # Unlimited size (-1)
-docker exec kafka1 kafka-configs --bootstrap-server localhost:9092 \
-  --entity-type topics --entity-name my-topic \
-  --alter --add-config retention.bytes=-1
+docker exec kafka1 kafka-configs --bootstrap-server localhost:9092 --entity-type topics --entity-name my-topic --alter --add-config retention.bytes=-1
 ```
 
 ### Retention Configuration Summary
@@ -808,14 +766,10 @@ For topics with `cleanup.policy=compact`, Kafka keeps only the latest value for 
 
 ```bash
 # Enable log compaction
-docker exec kafka1 kafka-configs --bootstrap-server localhost:9092 \
-  --entity-type topics --entity-name my-topic \
-  --alter --add-config cleanup.policy=compact
+docker exec kafka1 kafka-configs --bootstrap-server localhost:9092 --entity-type topics --entity-name my-topic --alter --add-config cleanup.policy=compact
 
 # Enable both delete and compact
-docker exec kafka1 kafka-configs --bootstrap-server localhost:9092 \
-  --entity-type topics --entity-name my-topic \
-  --alter --add-config cleanup.policy=compact,delete
+docker exec kafka1 kafka-configs --bootstrap-server localhost:9092 --entity-type topics --entity-name my-topic --alter --add-config cleanup.policy=compact,delete
 ```
 
 ## Connection Details
@@ -881,8 +835,7 @@ docker exec kafka1 kafka-metadata --snapshot /var/lib/kafka/data/__cluster_metad
 The `__cluster_metadata` topic stores KRaft cluster state. Use `kafka-dump-log` to read its contents:
 
 ```bash
-docker exec kafka1 kafka-dump-log --cluster-metadata-decoder \
-  --files /var/lib/kafka/data/__cluster_metadata-0/00000000000000000000.log
+docker exec kafka1 kafka-dump-log --cluster-metadata-decoder --files /var/lib/kafka/data/__cluster_metadata-0/00000000000000000000.log
 ```
 
 ### Container Shell Access
