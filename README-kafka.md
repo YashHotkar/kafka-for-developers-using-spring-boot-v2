@@ -136,22 +136,19 @@ docker exec kafka1 kafka-topics --bootstrap-server localhost:9092 --create --top
 For multi-broker setup, you can use a higher replication factor:
 
 ```bash
-docker exec kafka1 kafka-topics --bootstrap-server localhost:9092 
-  --create --topic my-topic --partitions 3 --replication-factor 3
+docker exec kafka1 kafka-topics --bootstrap-server localhost:9092  --create --topic my-topic --partitions 3 --replication-factor 3
 ```
 
 ### Describe a Topic
 
 ```bash
-docker exec kafka1 kafka-topics --bootstrap-server localhost:9092 
-  --describe --topic my-topic
+docker exec kafka1 kafka-topics --bootstrap-server localhost:9092  --describe --topic my-topic
 ```
 
 ### Delete a Topic
 
 ```bash
-docker exec kafka1 kafka-topics --bootstrap-server localhost:9092 
-  --delete --topic my-topic
+docker exec kafka1 kafka-topics --bootstrap-server localhost:9092  --delete --topic my-topic
 ```
 
 ## Producing and Consuming Messages
@@ -159,8 +156,7 @@ docker exec kafka1 kafka-topics --bootstrap-server localhost:9092
 ### Producer
 
 ```bash
-docker exec -it kafka1 kafka-console-producer --bootstrap-server localhost:9092 
-  --topic my-topic
+docker exec -it kafka1 kafka-console-producer --bootstrap-server localhost:9092  --topic my-topic
 ```
 
 Type your messages and press Enter after each. Press `Ctrl+C` to exit.
@@ -168,15 +164,13 @@ Type your messages and press Enter after each. Press `Ctrl+C` to exit.
 ### Consumer
 
 ```bash
-docker exec -it kafka1 kafka-console-consumer --bootstrap-server localhost:9092 
-  --topic my-topic
+docker exec -it kafka1 kafka-console-consumer --bootstrap-server localhost:9092  --topic my-topic
 ```
 
 ### Consume from Beginning
 
 ```bash
-docker exec -it kafka1 kafka-console-consumer --bootstrap-server localhost:9092 
-  --topic my-topic --from-beginning
+docker exec -it kafka1 kafka-console-consumer --bootstrap-server localhost:9092  --topic my-topic --from-beginning
 ```
 
 ---
@@ -184,10 +178,7 @@ docker exec -it kafka1 kafka-console-consumer --bootstrap-server localhost:9092
 ### Producer with Keys
 
 ```bash
-docker exec -it kafka1 kafka-console-producer --bootstrap-server localhost:9092 
-  --topic my-topic \
-  --property parse.key=true \
-  --property key.separator=-
+docker exec -it kafka1 kafka-console-producer --bootstrap-server localhost:9092  --topic my-topic  --property parse.key=true  --property key.separator=-
 ```
 
 Format: `key-value` (e.g., `user1-Hello World`)
@@ -195,10 +186,7 @@ Format: `key-value` (e.g., `user1-Hello World`)
 ### Consumer with Keys
 
 ```bash
-docker exec -it kafka1 kafka-console-consumer --bootstrap-server localhost:9092 
-  --topic my-topic --from-beginning \
-  --property print.key=true \
-  --property key.separator=-
+docker exec -it kafka1 kafka-console-consumer --bootstrap-server localhost:9092 --topic my-topic --from-beginning --property print.key=true --property key.separator=-
 ```
 
 ---
